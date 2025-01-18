@@ -1,9 +1,8 @@
-import mongoose from 'mongoose';
-const bodyParser = require('body-parser');
-const connectDB = require('./config/db');
-const taskRoutes = require('./routes/taskRoutes');
-
+import taskRoutes from './routes/taskRoutes.js';
+import bodyParser from 'body-parser';
+import connectDB from './config/db.js';
 import express from 'express';
+
 const app = express();
 
 // Connect to MongoDB
@@ -61,10 +60,10 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api', taskRoutes);
 
-// Start the server
+//start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const server= app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-export default app;
+
+
+export { app};

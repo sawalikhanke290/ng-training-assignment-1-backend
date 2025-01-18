@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "mocha test/task.test.js"
+    "start": "node app.js",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",

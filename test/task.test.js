@@ -1,28 +1,34 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../app.js';
-import Task from '../models/taskModel.js';
+import request from 'supertest';
 
-const { expect } = chai;
 chai.use(chaiHttp);
 
-describe('Task API Tests', () => {
-  beforeEach(async () => {
-    await Task.deleteMany({});
+import { app } from '../app.js'; 
+
+const { expect } = chai;
+
+describe('Task API Tests', function () {
+  it('should create a new task', function (done) {
+    request('http://localhost:5000')  // Replace with your server URL
+      .post('/task')  // Replace with your actual API endpoint for creating tasks
+      .send({ title: 'New Task', description: 'Test task description' })  // Sample task data
+      .expect(201)  // Expecting 201 status code for creation
+      .end(function (err, res) {
+        if (err) return done(err);
+        expect(res.body).to.have.property('title').eql('New Task');
+        done();
+      });
   });
 
-  it('should create a new task', async () => {
-    const res = await chai.request(app)
-      .post('/api/task')
-      .send({ title: 'Test Task', description: 'Test Description' });
-
-    expect(res.status).to.equal(201);
-    expect(res.body).to.have.property('title', 'Test Task');
-  });
-
-  it('should retrieve all tasks', async () => {
-    const res = await chai.request(app).get('/api/tasks');
-    expect(res.status).to.equal(200);
-    expect(res.body).to.be.an('array');
+  it('should retrieve all tasks', function (done) {
+    request('http://localhost:5000')
+      .get('/tasks')  // Replace with your actual API endpoint for retrieving tasks
+      .expect(200)  // Expecting 200 status code
+      .end(function (err, res) {
+        if (err) return done(err);
+        expect(res.body).to.be.an('array');
+        done();
+      });
   });
 });
